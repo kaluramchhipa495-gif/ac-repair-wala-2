@@ -38,12 +38,16 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Arial,sans-serif;background:#f5f8fc;color:#172b4d;line-height:1.7}
-.topbar{background:#08295c;color:white;padding:10px 5%;text-align:center}
+.topbar{background:#08295c;color:white;padding:10px 5%;text-align:center;font-size:14px}
+.live-clock{display:inline-block;background:rgba(255,255,255,0.14);padding:2px 10px;border-radius:20px;margin:4px 4px 0;font-weight:bold}
+.status-badge{display:inline-block;padding:2px 10px;border-radius:20px;font-size:12px;font-weight:bold;margin-left:4px}
+.open-now{background:#18a842;color:#fff}
+.closed-now{background:#e52b25;color:#fff}
 header{background:white;padding:18px 5%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;box-shadow:0 2px 8px #ddd}
 .logo{font-size:25px;font-weight:bold;color:#123b72}
 .logo span{color:#e52b25}
 .tagline{font-size:13px;color:#555}
-nav a{color:#123b72;text-decoration:none;margin:5px;font-weight:bold}
+nav a{color:#123b72;text-decoration:none;margin:5px;font-weight:bold;font-size:15px}
 .btn{display:inline-block;padding:12px 18px;border-radius:7px;color:white;text-decoration:none;font-weight:bold;margin:5px}
 .call{background:#0969e8}
 .whatsapp{background:#18a842}
@@ -52,7 +56,8 @@ nav a{color:#123b72;text-decoration:none;margin:5px;font-weight:bold}
 .hero h1 span{color:#e52b25}
 .hero p{max-width:850px;margin:15px auto;color:#555;font-size:17px}
 section{padding:48px 5%;text-align:center}
-h2{color:#092c61;margin-bottom:20px;font-size:29px}
+h2{color:#092c61;margin-bottom:14px;font-size:29px}
+.subtext{color:#555;max-width:720px;margin:0 auto 24px;font-size:15px}
 h3{color:#123b72;margin:12px 0}
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px;margin-top:25px}
 .card{background:white;padding:24px;border-radius:12px;box-shadow:0 3px 15px #dce3eb}
@@ -60,10 +65,34 @@ h3{color:#123b72;margin:12px 0}
 .card p,.area p{font-size:15px;color:#555}
 .video-box{background:white}
 .video-player{width:100%;max-width:380px;border-radius:14px;box-shadow:0 6px 20px rgba(9,44,97,0.15);display:block;margin:18px auto 0}
-.areas{background:#eaf5ff}
+
+/* Rate Card Table */
+.rates{background:#f5f8fc}
+.rate-table{width:100%;max-width:820px;margin:0 auto;border-collapse:collapse;background:white;border-radius:12px;overflow:hidden;box-shadow:0 3px 15px #dce3eb;text-align:left}
+.rate-table th{background:#092c61;color:white;padding:14px 18px;font-size:16px}
+.rate-table td{padding:14px 18px;border-bottom:1px solid #e6edf5;font-size:15px}
+.rate-table tr:last-child td{border-bottom:none}
+.price-tag{font-weight:bold;color:#0969e8;white-space:nowrap}
+.rate-note{font-size:13px;color:#666;margin-top:14px}
+
+/* Reviews */
+.reviews{background:white}
+.review-card{background:#f8fbff;padding:22px;border-radius:12px;border:1px solid #e1ebf5;text-align:left}
+.stars{color:#f5a623;font-size:18px;margin-bottom:8px}
+.reviewer{font-weight:bold;color:#092c61;margin-top:12px;font-size:14px}
+
+/* FAQ */
+.faq{background:#eaf5ff}
+.faq-list{max-width:820px;margin:0 auto;text-align:left}
+.faq-item{background:white;border-radius:10px;margin-bottom:12px;padding:16px 20px;box-shadow:0 2px 8px rgba(0,0,0,0.05)}
+.faq-item summary{font-weight:bold;color:#092c61;cursor:pointer;font-size:16px;list-style:none}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary::after{content:"+";float:right;font-size:20px;color:#0969e8}
+.faq-item[open] summary::after{content:"−"}
+.faq-item p{margin-top:10px;color:#555;font-size:15px}
+
+.areas{background:#f5f8fc}
 .area{background:white;padding:25px;margin:18px auto;max-width:900px;border-radius:12px;text-align:left;box-shadow:0 2px 10px #ddd}
-.why{background:#092c61;color:white}
-.why h2,.why h3{color:white}
 .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:20px}
 .contact{background:white}
 footer{background:#061d43;color:white;padding:30px 5%;text-align:center}
@@ -73,6 +102,7 @@ header{justify-content:center;text-align:center}
 nav{width:100%}
 .hero h1{font-size:29px}
 section{padding:35px 18px}
+.rate-table th,.rate-table td{padding:11px 12px;font-size:14px}
 }
 </style>
 </head>
@@ -82,6 +112,7 @@ section{padding:35px 18px}
 <div class="topbar">
 📍 Shikarpura Road, Shikarpur, Sanganer, Jaipur |
 🕐 Daily 8 AM - 8 PM
+<span class="live-clock">⏰ <span id="jaipurTime">--:--:--</span> <span id="shopStatus" class="status-badge">Checking...</span></span>
 </div>
 
 <header>
@@ -92,6 +123,9 @@ section{padding:35px 18px}
 <nav>
 <a href="#home">Home</a>
 <a href="#services">Services</a>
+<a href="#rates">Rates</a>
+<a href="#reviews">Reviews</a>
+<a href="#faq">FAQ</a>
 <a href="#areas">Areas</a>
 <a href="#contact">Contact</a>
 </nav>
@@ -147,13 +181,98 @@ Mansarovar, Pratap Nagar, Jagatpura and Watika.
 
 <section class="video-box" id="promo-video">
 <h2>Service Preview Video</h2>
-<p>Watch how we handle home appliance repair and service across Jaipur.</p>
+<p class="subtext">Watch how we handle home appliance repair and service across Jaipur.</p>
 <video class="video-player" src="YTShort_22Nov2026_19_38_41.mp4" controls muted playsinline preload="metadata"></video>
+</section>
+
+<section class="rates" id="rates">
+<h2>Service & Inspection Charges</h2>
+<p class="subtext">Transparent pricing with no hidden surprises. Exact repair cost is confirmed after inspection.</p>
+<table class="rate-table">
+<thead>
+<tr>
+<th>Service Type</th>
+<th>Starting / Standard Charge</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Doorstep Visit & Fault Inspection</td>
+<td class="price-tag">₹199 – ₹250</td>
+</tr>
+<tr>
+<td>Split / Window AC General Servicing</td>
+<td class="price-tag">Starts ₹499</td>
+</tr>
+<tr>
+<td>AC Gas Refilling & Leakage Check</td>
+<td class="price-tag">On Inspection</td>
+</tr>
+<tr>
+<td>Refrigerator & Deep Fridge Repair</td>
+<td class="price-tag">Starts ₹249</td>
+</tr>
+<tr>
+<td>Washing Machine Repair (Top / Front Load)</td>
+<td class="price-tag">Starts ₹249</td>
+</tr>
+<tr>
+<td>Microwave Oven & LED TV Repair</td>
+<td class="price-tag">Starts ₹249</td>
+</tr>
+</tbody>
+</table>
+<p class="rate-note">* Visit charge depends on area distance. Spare parts cost (if any) is extra and explained clearly before replacement.</p>
+</section>
+
+<section class="reviews" id="reviews">
+<h2>What Our Jaipur Customers Say</h2>
+<p class="subtext">Trusted by families across Sanganer, Mansarovar, Pratap Nagar, Jagatpura, and Watika.</p>
+<div class="cards">
+<div class="review-card">
+<div class="stars">★★★★★</div>
+<p>"Split AC cooling problem was fixed on the same day. Technician arrived on time in Sanganer and explained the charges clearly."</p>
+<div class="reviewer">— Rajesh Sharma, Sanganer</div>
+</div>
+<div class="review-card">
+<div class="stars">★★★★★</div>
+<p>"Very polite and neat work for our washing machine repair. Reasonable pricing and genuine parts used."</p>
+<div class="reviewer">— Neha Verma, Mansarovar</div>
+</div>
+<div class="review-card">
+<div class="stars">★★★★★</div>
+<p>"Called for refrigerator cooling issue in Pratap Nagar. Quick diagnosis and fast service without overcharging."</p>
+<div class="reviewer">— Deepak Jain, Pratap Nagar</div>
+</div>
+</div>
+</section>
+
+<section class="faq" id="faq">
+<h2>Frequently Asked Questions (FAQ)</h2>
+<p class="subtext">Common questions about our home appliance repair service in Jaipur.</p>
+<div class="faq-list">
+<details class="faq-item">
+<summary>How much is the doorstep visit charge?</summary>
+<p>Our home visit and inspection charge is ₹199 to ₹250 depending on your location across Sanganer, Mansarovar, Pratap Nagar, Jagatpura, and Watika.</p>
+</details>
+<details class="faq-item">
+<summary>How quickly can a technician visit my home?</summary>
+<p>We provide same-day home service between 8:00 AM and 8:00 PM. Call or WhatsApp us at 6375365736 to book your preferred time slot.</p>
+</details>
+<details class="faq-item">
+<summary>Will I know the repair estimate before work starts?</summary>
+<p>Yes. Our technician checks the appliance first and explains the exact repair and spare part cost before starting any work.</p>
+</details>
+<details class="faq-item">
+<summary>Which brands do you repair?</summary>
+<p>We repair all major brands of AC, refrigerators, washing machines, microwaves, and LED TVs including LG, Samsung, Voltas, Daikin, Whirlpool, IFB, Godrej, Haier, and Sony.</p>
+</details>
+</div>
 </section>
 
 <section class="areas" id="areas">
 <h2>Our Home Service Areas in Jaipur</h2>
-<p>We serve customers in the following Jaipur areas. Contact us to confirm availability at your address.</p>
+<p class="subtext">We serve customers in the following Jaipur areas. Contact us to confirm availability at your address.</p>
 
 <div class="area">
 <h3>AC & Appliance Repair in Sanganer</h3>
@@ -195,7 +314,7 @@ Mansarovar, Pratap Nagar, Jagatpura and Watika.
 <h2>Contact A TO Z SERVICE CENTER</h2>
 <p><strong>Phone:</strong> 6375365736</p>
 <p><strong>Address:</strong> Shikarpura Road, Shikarpur, Sanganer, Jaipur, Rajasthan</p>
-<p><strong>Visit charge:</strong> ₹199</p>
+<p><strong>Visit charge:</strong> ₹199 – ₹250</p>
 <a class="btn call" href="tel:6375365736">Call Now</a>
 <a class="btn whatsapp" href="https://wa.me/916375365736" target="_blank" rel="noopener">WhatsApp Now</a>
 </section>
@@ -207,6 +326,27 @@ Mansarovar, Pratap Nagar, Jagatpura and Watika.
 <p>Shikarpura Road, Shikarpur, Sanganer, Jaipur</p>
 <p>© 2026 A TO Z SERVICE CENTER. All Rights Reserved.</p>
 </footer>
+
+<script>
+function updateClock() {
+  const now = new Date();
+  const options = { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+  const timeStr = now.toLocaleTimeString('en-IN', options);
+  document.getElementById('jaipurTime').textContent = timeStr;
+
+  const istHour = parseInt(now.toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour: '2-digit', hour12: false }), 10);
+  const statusEl = document.getElementById('shopStatus');
+  if (istHour >= 8 && istHour < 20) {
+    statusEl.textContent = 'Open Now';
+    statusEl.className = 'status-badge open-now';
+  } else {
+    statusEl.textContent = 'Closed (Opens 8 AM)';
+    statusEl.className = 'status-badge closed-now';
+  }
+}
+updateClock();
+setInterval(updateClock, 1000);
+</script>
 
 </body>
 </html>
